@@ -20,7 +20,13 @@ public class ImageEditor {
         for (int row = 0; row < og.getHeight(); row++) {
             for (int col = 0; col < og.getWidth(); col++) {
                 // apply pixel transform here
+                Pixel p = og.getPixel(row, col);
+              
+                int r = 255 - p.getR();
+                int g = 255 - p.getG();
+                int b = 255 - p.getB();
                 // assign pixel to `transformed` image
+                transformed.setPixel(row, col, new Pixel(r,g,b));
             }
         }
 
@@ -37,8 +43,16 @@ public class ImageEditor {
     *
     * Use the same double loop as negative().
     */
-    public Image grayscale() {
-        return null;
+   public Image grayscale() {
+        Image transformed = new Image(og.getHeight(), og.getWidth());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                int avg = p.getPromedio(); // Usamos nuestro nuevo método
+                transformed.setPixel(row, col, new Pixel(avg, avg, avg));
+            }
+        }
+        return transformed;
     }
 
     /**
@@ -54,7 +68,17 @@ public class ImageEditor {
     * @param channel 0 = red, 1 = green, 2 = blue
     */
     public Image keepOnlyChannel(int channel) {
-        return null;
+        Image transformed = new Image(og.getHeight(), og.getWidth());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                int r = (channel == 0) ? p.getR() : 0;
+                int g = (channel == 1) ? p.getG() : 0;
+                int b = (channel == 2) ? p.getB() : 0;
+                transformed.setPixel(row, col, new Pixel(r, g, b));
+            }
+        }
+        return transformed;
     }
 
     /**
@@ -70,8 +94,20 @@ public class ImageEditor {
     * Run it once WITHOUT clamping and look at the output file. Then add the
     * clamping and compare. You should be able to explain the difference.
     */
-    public Image brightness(int amount) {
-        return null;
+  public Image brightness(int amount) {
+        Image transformed = new Image(og.getHeight(), og.getWidth());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                // Los setters en la clase Pixel se encargarán del "clamping"
+                transformed.setPixel(row, col, new Pixel(
+                    p.getR() + amount, 
+                    p.getG() + amount, 
+                    p.getB() + amount
+                ));
+            }
+        }
+        return transformed;
     }
 
     /**
@@ -85,8 +121,17 @@ public class ImageEditor {
     *
     * @param limit a value between 0 and 255
     */
-    public Image blackAndWhite(int limit) {
-        return null;
+   public Image blackAndWhite(int limit) {
+        Image transformed = new Image(og.getHeight(), og.getWidth());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                int avg = p.getPromedio();
+                int val = (avg > limit) ? 255 : 0;
+                transformed.setPixel(row, col, new Pixel(val, val, val));
+            }
+        }
+        return transformed;
     }
 
     // ---------------------------------------------------------------
@@ -110,7 +155,15 @@ public class ImageEditor {
     * values directly inside the original array using the full width?
     */
     public Image mirrorHorizontal() {
-        return null;
+        Image transformed = new Image(og.getHeight(), og.getWidth());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                int nuevaColumna = og.getWidth() - 1 - col;
+                transformed.setPixel(row, nuevaColumna, new Pixel(p.getR(), p.getG(), p.getB()));
+            }
+        }
+        return transformed;
     }
 
     /**
@@ -128,7 +181,17 @@ public class ImageEditor {
     * otherwise every method you call afterwards will break.
     */
     public Image rotate90() {
-        return null;
+        
+        Image transformed = new Image(og.getWidth(), og.getHeight());
+        for (int row = 0; row < og.getHeight(); row++) {
+            for (int col = 0; col < og.getWidth(); col++) {
+                Pixel p = og.getPixel(row, col);
+                int nuevaFila = col;
+                int nuevaColumna = og.getHeight() - 1 - row;
+                transformed.setPixel(nuevaFila, nuevaColumna, new Pixel(p.getR(), p.getG(), p.getB()));
+            }
+        }
+        return transformed;
     }
 
     // ---------------------------------------------------------------
