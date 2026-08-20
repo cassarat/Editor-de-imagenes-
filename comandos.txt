@@ -1,0 +1,16 @@
+git remote set-url origin https://github.com/cassarat/Editor-de-imagenes-.git
+
+git push -u origin master
+javac -d bin src/*.java
+java -cp bin Main data/input.png data/gris.png grises
+java -cp bin Main data/input.png data/negativo.png negativo
+java -cp bin Main data/input.png data/rojo.png rojo
+java -cp bin Main data/input.png data/verde.png verde
+java -cp bin Main data/input.png data/azul.png azul
+java -cp bin Main data/input.png data/brillo.png brillo 60
+java -cp bin Main data/input.png data/umbral.png umbral 128
+java -cp bin Main data/input.png data/espejo.png espejo
+java -cp bin Main data/input.png data/rotar.png rotar
+git add .
+git commit -m "se logro"
+git push origin master
